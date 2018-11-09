@@ -2,6 +2,7 @@ package com.github.tifezh.kchart;
 
 import com.github.tifezh.kchart.chart.KLineEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,19 +17,19 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculateRSI(List<KLineEntity> datas) {
-        float rsi1 = 0;
-        float rsi2 = 0;
-        float rsi3 = 0;
-        float rsi1ABSEma = 0;
-        float rsi2ABSEma = 0;
-        float rsi3ABSEma = 0;
-        float rsi1MaxEma = 0;
-        float rsi2MaxEma = 0;
-        float rsi3MaxEma = 0;
+    static void calculateRSI(List< ? extends KLineEntity> datas) {
+        double rsi1 = 0;
+        double rsi2 = 0;
+        double rsi3 = 0;
+        double rsi1ABSEma = 0;
+        double rsi2ABSEma = 0;
+        double rsi3ABSEma = 0;
+        double rsi1MaxEma = 0;
+        double rsi2MaxEma = 0;
+        double rsi3MaxEma = 0;
         for (int i = 0; i < datas.size(); i++) {
             KLineEntity point = datas.get(i);
-            final float closePrice = point.getClosePrice();
+            final double closePrice = point.getClosePrice();
             if (i == 0) {
                 rsi1 = 0;
                 rsi2 = 0;
@@ -40,8 +41,8 @@ public class DataHelper {
                 rsi2MaxEma = 0;
                 rsi3MaxEma = 0;
             } else {
-                float Rmax = Math.max(0, closePrice - datas.get(i - 1).getClosePrice());
-                float RAbs = Math.abs(closePrice - datas.get(i - 1).getClosePrice());
+                double Rmax = Math.max(0, closePrice - datas.get(i - 1).getClosePrice());
+                double RAbs = Math.abs(closePrice - datas.get(i - 1).getClosePrice());
                 rsi1MaxEma = (Rmax + (6f - 1) * rsi1MaxEma) / 6f;
                 rsi1ABSEma = (RAbs + (6f - 1) * rsi1ABSEma) / 6f;
 
@@ -66,25 +67,25 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculateKDJ(List<KLineEntity> datas) {
-        float k = 0;
-        float d = 0;
+    static void calculateKDJ(List<? extends KLineEntity> datas) {
+        double k = 0;
+        double d = 0;
 
         for (int i = 0; i < datas.size(); i++) {
             KLineEntity point = datas.get(i);
-            final float closePrice = point.getClosePrice();
+            final double closePrice = point.getClosePrice();
             int startIndex = i - 8;
             if (startIndex < 0) {
                 startIndex = 0;
             }
-            float max9 = Float.MIN_VALUE;
-            float min9 = Float.MAX_VALUE;
+            double max9 = Double.MIN_VALUE;
+            double min9 = Double.MAX_VALUE;
             for (int index = startIndex; index <= i; index++) {
                 max9 = Math.max(max9, datas.get(index).getHighPrice());
                 min9 = Math.min(min9, datas.get(index).getLowPrice());
 
             }
-            float rsv = 100f * (closePrice - min9) / (max9 - min9);
+            double rsv = 100f * (closePrice - min9) / (max9 - min9);
             if (i == 0) {
                 k = rsv;
                 d = rsv;
@@ -104,16 +105,16 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculateMACD(List<KLineEntity> datas) {
-        float ema12 = 0;
-        float ema26 = 0;
-        float dif = 0;
-        float dea = 0;
-        float macd = 0;
+    static void calculateMACD(List<? extends KLineEntity> datas) {
+        double ema12 = 0;
+        double ema26 = 0;
+        double dif = 0;
+        double dea = 0;
+        double macd = 0;
 
         for (int i = 0; i < datas.size(); i++) {
             KLineEntity point = datas.get(i);
-            final float closePrice = point.getClosePrice();
+            final double closePrice = point.getClosePrice();
             if (i == 0) {
                 ema12 = closePrice;
                 ema26 = closePrice;
@@ -141,28 +142,28 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculateBOLL(List<KLineEntity> datas) {
+    static void calculateBOLL(List<? extends KLineEntity> datas) {
         for (int i = 0; i < datas.size(); i++) {
             KLineEntity point = datas.get(i);
-            final float closePrice = point.getClosePrice();
+            final double closePrice = point.getClosePrice();
             if (i == 0) {
                 point.mb = closePrice;
-                point.up = Float.NaN;
-                point.dn = Float.NaN;
+                point.up = Double.NaN;
+                point.dn = Double.NaN;
             } else {
                 int n = 20;
                 if (i < 20) {
                     n = i + 1;
                 }
-                float md = 0;
+                double md = 0;
                 for (int j = i - n + 1; j <= i; j++) {
-                    float c = datas.get(j).getClosePrice();
-                    float m = point.getMA20Price();
-                    float value = c - m;
+                    double c = datas.get(j).getClosePrice();
+                    double m = point.getMA20Price();
+                    double value = c - m;
                     md += value * value;
                 }
                 md = md / (n - 1);
-                md = (float) Math.sqrt(md);
+                md =  Math.sqrt(md);
                 point.mb = point.getMA20Price();
                 point.up = point.mb + 2f * md;
                 point.dn = point.mb - 2f * md;
@@ -176,35 +177,89 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculateMA(List<KLineEntity> datas) {
-        float ma5 = 0;
-        float ma10 = 0;
-        float ma20 = 0;
+    static void calculateMA(List<? extends KLineEntity> datas) {
+        BigDecimal ma5 = new BigDecimal(0);
+        BigDecimal ma10 = new BigDecimal(0);
+        BigDecimal ma20 = new BigDecimal(0);
+        BigDecimal ma30 = new BigDecimal(0);
+        BigDecimal ma60 = new BigDecimal(0);
 
         for (int i = 0; i < datas.size(); i++) {
             KLineEntity point = datas.get(i);
-            final float closePrice = point.getClosePrice();
+            final BigDecimal closePrice = new BigDecimal(String.valueOf(point.getClosePrice()));
 
-            ma5 += closePrice;
-            ma10 += closePrice;
-            ma20 += closePrice;
+            ma5 = ma5.add(closePrice);
+            ma10 = ma10 .add(closePrice);
+            ma20 = ma20 .add(closePrice);
+            ma30 = ma30 .add(closePrice);
+            ma60 = ma60 .add(closePrice);
+
             if (i >= 5) {
-                ma5 -= datas.get(i - 5).getClosePrice();
-                point.MA5Price = ma5 / 5f;
+                BigDecimal bd = new BigDecimal(String.valueOf(datas.get(i - 5).getClosePrice()));
+                ma5 = ma5.subtract(bd);
+                point.MA5Price = ma5.divide(new BigDecimal(5),BigDecimal.ROUND_DOWN).doubleValue();
             } else {
-                point.MA5Price = ma5 / (i + 1f);
+                if(i == 4){
+                    point.MA5Price = ma5.divide(new BigDecimal(5),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    point.MA5Price = 0d;
+                }
             }
+
             if (i >= 10) {
-                ma10 -= datas.get(i - 10).getClosePrice();
-                point.MA10Price = ma10 / 10f;
+                BigDecimal bd = new BigDecimal(String.valueOf(datas.get(i - 10).getClosePrice()));
+                ma10 = ma10.subtract(bd);
+                point.MA10Price = ma10.divide(new BigDecimal(10),BigDecimal.ROUND_DOWN).doubleValue();
             } else {
-                point.MA10Price = ma10 / (i + 1f);
+                if(i == 9){
+                    point.MA10Price = ma10.divide(new BigDecimal(10),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    point.MA10Price = 0d;
+                }
             }
+
             if (i >= 20) {
-                ma20 -= datas.get(i - 20).getClosePrice();
-                point.MA20Price = ma20 / 20f;
+                BigDecimal bd = new BigDecimal(String.valueOf(datas.get(i - 20).getClosePrice()));
+                ma20 = ma20.subtract(bd);
+                point.MA20Price = ma20.divide(new BigDecimal(20),BigDecimal.ROUND_DOWN).doubleValue();
             } else {
-                point.MA20Price = ma20 / (i + 1f);
+                if(i == 19){
+                    point.MA20Price = ma20.divide(new BigDecimal(20),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    point.MA20Price = 0d;
+                }
+            }
+
+            if (i >= 30) {
+                BigDecimal bd = new BigDecimal(String.valueOf(datas.get(i - 30).getClosePrice()));
+                ma30 = ma30.subtract(bd);
+                point.MA30Price = ma30.divide(new BigDecimal(30),BigDecimal.ROUND_DOWN).doubleValue();
+            } else {
+                if(i == 29){
+                    point.MA30Price = ma30.divide(new BigDecimal(30),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    point.MA30Price = 0d;
+                }
+            }
+
+            if (i >= 60) {
+                BigDecimal bd = new BigDecimal(String.valueOf(datas.get(i - 60).getClosePrice()));
+                ma60 = ma60.subtract(bd);
+                point.MA60Price = ma60.divide(new BigDecimal(60),BigDecimal.ROUND_DOWN).doubleValue();
+            } else {
+                if(i == 59){
+                    point.MA60Price = ma60.divide(new BigDecimal(60),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    point.MA60Price = 0d;
+                }
+            }
+
+            if(i !=0 ){
+                String closePriceStr = String.valueOf(point.closePrice);
+                String previousClosePriceStr = String.valueOf(datas.get(i - 1).closePrice);
+                BigDecimal upDownValueBd = new BigDecimal(closePriceStr).subtract(new BigDecimal(previousClosePriceStr));
+                point.upDownValue = upDownValueBd.doubleValue();
+                point.upDownPercentValue = upDownValueBd.divide(new BigDecimal(closePriceStr), BigDecimal.ROUND_DOWN).doubleValue();
             }
         }
     }
@@ -214,7 +269,7 @@ public class DataHelper {
      *
      * @param datas
      */
-    static void calculate(List<KLineEntity> datas) {
+    public static void calculate(List<? extends KLineEntity> datas) {
         calculateMA(datas);
         calculateMACD(datas);
         calculateBOLL(datas);
@@ -223,30 +278,39 @@ public class DataHelper {
         calculateVolumeMA(datas);
     }
 
-    private static void calculateVolumeMA(List<KLineEntity> entries) {
-        float volumeMa5 = 0;
-        float volumeMa10 = 0;
+    private static void calculateVolumeMA(List<? extends KLineEntity> entries) {
+        BigDecimal  volumeMa5 = new BigDecimal(0);
+        BigDecimal  volumeMa10 = new BigDecimal(0);
 
         for (int i = 0; i < entries.size(); i++) {
             KLineEntity entry = entries.get(i);
+            final BigDecimal volumeBd = new BigDecimal(entry.getVolume());
 
-            volumeMa5 += entry.getVolume();
-            volumeMa10 += entry.getVolume();
+            volumeMa5 = volumeMa5.add(volumeBd);
+            volumeMa10 = volumeMa10.add(volumeBd);
 
             if (i >= 5) {
-
-                volumeMa5 -= entries.get(i - 5).getVolume();
-                entry.MA5Volume = (volumeMa5 / 5f);
+                BigDecimal bd = new BigDecimal(String.valueOf(entries.get(i - 5).getVolume()));
+                volumeMa5 = volumeMa5.subtract(bd);
+                entry.MA5Volume = volumeMa5.divide(new BigDecimal(5),BigDecimal.ROUND_DOWN).doubleValue();
             } else {
-
-                entry.MA5Volume = (volumeMa5 / (i + 1f));
+                if(i == 4){
+                    entry.MA5Volume = volumeMa5.divide(new BigDecimal(5),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    entry.MA5Volume = -1d;
+                }
             }
 
             if (i >= 10) {
-                volumeMa10 -= entries.get(i - 10).getVolume();
-                entry.MA10Volume = (volumeMa10 / 5f);
+                BigDecimal bd = new BigDecimal(String.valueOf(entries.get(i - 10).getVolume()));
+                volumeMa10 = volumeMa10.subtract(bd);
+                entry.MA10Volume = volumeMa10.divide(new BigDecimal(10),BigDecimal.ROUND_DOWN).doubleValue();
             } else {
-                entry.MA10Volume = (volumeMa10 / (i + 1f));
+                if(i == 9){
+                    entry.MA10Volume = volumeMa10.divide(new BigDecimal(10),BigDecimal.ROUND_DOWN).doubleValue();
+                }else {
+                    entry.MA10Volume = -1d;
+                }
             }
         }
     }

@@ -9,38 +9,24 @@ import java.util.Date;
  * Created by tifezh on 2017/7/20.
  */
 
-public class MinuteLineEntity implements IMinuteLine {
-    /**
-     * time : 09:30
-     * price : 3.53
-     * avg : 3.5206
-     * vol : 9251
-     */
+public class MinuteLineEntity extends KLineEntity implements IMinuteLine {
+    private String time;    //时间  比如09:30
 
-    public Date time;
-    public float price;
-    public float avg;
-    public float volume;
+    private double cjAvgPrice; //成交均价
 
     @Override
-    public float getAvgPrice() {
-        return avg;
+    public double getAvgPrice() {
+        return cjAvgPrice;
     }
 
     @Override
-    public float getPrice() {
-        return price;
+    public double getPrice() {
+        return closePrice;
     }
 
     @Override
     public Date getDate() {
-        return time;
+        return new Date(timeStamp);
     }
-
-    @Override
-    public float getVolume() {
-        return volume;
-    }
-
 
 }

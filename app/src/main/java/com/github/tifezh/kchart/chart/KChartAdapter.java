@@ -1,6 +1,8 @@
 package com.github.tifezh.kchart.chart;
 
+import com.github.tifezh.kchart.DataHelper;
 import com.github.tifezh.kchartlib.chart.BaseKChartAdapter;
+import com.github.tifezh.kchartlib.utils.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,68 +13,52 @@ import java.util.List;
  * Created by tifezh on 2016/6/18.
  */
 
-public class KChartAdapter extends BaseKChartAdapter {
+public class KChartAdapter<T extends KLineEntity> extends BaseKChartAdapter {
 
-    private List<KLineEntity> datas = new ArrayList<>();
+    private List<T> mDataList = new ArrayList<>();
 
-    public KChartAdapter() {
-
+    public List<T> getDataList() {
+        return mDataList;
     }
 
     @Override
     public int getCount() {
-        return datas.size();
+        return mDataList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return datas.get(position);
+    public T getItem(int position) {
+        return mDataList.get(position);
     }
 
     @Override
     public Date getDate(int position) {
-        try {
-            String s = datas.get(position).Date;
-            String[] split = s.split("/");
-            Date date = new Date();
-            date.setYear(Integer.parseInt(split[0]) - 1900);
-            date.setMonth(Integer.parseInt(split[1]) - 1);
-            date.setDate(Integer.parseInt(split[2]));
-            return date;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new Date(mDataList.get(position).getTimeStamp());
     }
 
-    /**
-     * 向头部添加数据
-     */
-    public void addHeaderData(List<KLineEntity> data) {
-        if (data != null && !data.isEmpty()) {
-            datas.addAll(data);
+    public void addFooterData(List<T> list){
+        if(!CollectionUtils.isEmpty(list)) {
+            mDataList.addAll(list);
+            DataHelper.calculate(mDataList);
             notifyDataSetChanged();
         }
     }
 
-    /**
-     * 向尾部添加数据
-     */
-    public void addFooterData(List<KLineEntity> data) {
-        if (data != null && !data.isEmpty()) {
-            datas.addAll(0, data);
+    public void addHeaderData(List<T> list){
+        if(!CollectionUtils.isEmpty(list)) {
+            mDataList.addAll(0, list);
+            DataHelper.calculate(mDataList);
             notifyDataSetChanged();
         }
     }
 
-    /**
-     * 改变某个点的值
-     * @param position 索引值
-     */
-    public void changeItem(int position,KLineEntity data)
-    {
-        datas.set(position,data);
-        notifyDataSetChanged();
+    public void setData(List<T> list){
+        if(!CollectionUtils.isEmpty(list)) {
+            mDataList.clear();
+            mDataList.addAll(list);
+            DataHelper.calculate(list);
+            notifyDataSetChanged();
+        }
     }
 
 }

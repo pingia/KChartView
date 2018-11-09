@@ -68,7 +68,7 @@ public class MinuteChartActivity extends AppCompatActivity {
                     endTime,
                     firstEndTime,
                     secondStartTime,
-                    (float) (minuteData.get(0).price - 0.5 + Math.random()));
+                    (float) (minuteData.get(0).closePrice - 0.5 + Math.random()));
         } catch (ParseException e) {
             e.printStackTrace();
         }

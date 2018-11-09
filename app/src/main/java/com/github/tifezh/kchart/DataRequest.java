@@ -77,7 +77,7 @@ public class DataRequest {
         if(firstEndTime==null&&secondStartTime==null) {
             while (startDate <= endTime.getTime()) {
                 MinuteLineEntity data = new MinuteLineEntity();
-                data.time = new Date(startDate);
+                data.timeStamp = new Date(startDate).getTime();
                 startDate += 60000;
                 list.add(data);
             }
@@ -85,14 +85,14 @@ public class DataRequest {
         else {
             while (startDate <= firstEndTime.getTime()) {
                 MinuteLineEntity data = new MinuteLineEntity();
-                data.time = new Date(startDate);
+                data.timeStamp = new Date(startDate).getTime();
                 startDate += 60000;
                 list.add(data);
             }
             startDate=secondStartTime.getTime();
             while (startDate <= endTime.getTime()) {
                 MinuteLineEntity data = new MinuteLineEntity();
-                data.time = new Date(startDate);
+                data.timeStamp = new Date(startDate).getTime();
                 startDate += 60000;
                 list.add(data);
             }
@@ -102,8 +102,7 @@ public class DataRequest {
         float sum = 0;
         for (int i = 0; i < list.size(); i++) {
             MinuteLineEntity data = list.get(i);
-            sum += data.price;
-            data.avg = 1f * sum / (i + 1);
+            sum += data.closePrice;
         }
         return list;
     }
@@ -145,7 +144,7 @@ public class DataRequest {
                 slope *= -1;
             }
 
-            list.get(x).price = height + 1000;
+            list.get(x).closePrice = height + 1000;
         }
     }
 }

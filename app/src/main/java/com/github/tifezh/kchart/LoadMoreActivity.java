@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.tifezh.kchart.chart.FormatUtils;
 import com.github.tifezh.kchart.chart.KChartAdapter;
 import com.github.tifezh.kchart.chart.KLineEntity;
+import com.github.tifezh.kchart.chart.MyValueFormatter;
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
 import com.github.tifezh.kchartlib.chart.KChartView;
 import com.github.tifezh.kchartlib.chart.formatter.DateFormatter;
@@ -53,6 +55,7 @@ public class LoadMoreActivity extends AppCompatActivity implements KChartView.KC
         mKChartView.setDateTimeFormatter(new DateFormatter());
         mKChartView.setGridRows(4);
         mKChartView.setGridColumns(4);
+        mKChartView.setValueFormatter(new MyValueFormatter(2));
         mKChartView.setOnSelectedChangedListener(new BaseKChartView.OnSelectedChangedListener() {
             @Override
             public void onSelectedChanged(BaseKChartView view, Object point, int index) {
@@ -94,7 +97,7 @@ public class LoadMoreActivity extends AppCompatActivity implements KChartView.KC
                     e.printStackTrace();
                 }
                 if (!data.isEmpty()) {
-                    Log.i("onLoadMoreBegin", "start:" + data.get(0).getDatetime() + " stop:" + data.get(data.size() - 1).getDatetime());
+                    Log.i("onLoadMoreBegin", "start:" + data.get(0).datetime+ " stop:" + data.get(data.size() - 1).datetime);
                 }
                 runOnUiThread(new Runnable() {
                     @Override
