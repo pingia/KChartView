@@ -10,35 +10,43 @@ public interface ICandle {
     /**
      * 开盘价
      */
-    float getOpenPrice();
+    double getOpenPrice();
 
     /**
      * 最高价
      */
-    float getHighPrice();
+    double getHighPrice();
 
     /**
      * 最低价
      */
-    float getLowPrice();
+    double getLowPrice();
 
     /**
      * 收盘价
      */
-    float getClosePrice();
+    double getClosePrice();
 
     /**
      * 五(月，日，时，分，5分等)均价
      */
-    float getMA5Price();
+    double getMA5Price();
 
     /**
      * 十(月，日，时，分，5分等)均价
      */
-    float getMA10Price();
+    double getMA10Price();
 
     /**
      * 二十(月，日，时，分，5分等)均价
      */
-    float getMA20Price();
+    double getMA20Price();
+
+    double getMA30Price();
+
+    double getMA60Price();
+
+    double getUpDownValue();
+
+    double getUpDownPercentValue();
 }

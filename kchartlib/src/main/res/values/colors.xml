@@ -10,6 +10,8 @@
     <color name="chart_ma5">#18CCF6</color>
     <color name="chart_ma10">#FE5EDF</color>
     <color name="chart_ma20">#E7A520</color>
+    <color name="chart_ma30">#E7A520</color>
+    <color name="chart_ma60">#E7A520</color>
     <color name="chart_white">#fff</color>
 
     <color name="chart_background">#202326</color>
@@ -18,4 +20,11 @@
     <color name="chart_selector">#c830343C</color>
     <color name="chart_tab_background">#30343C</color>
     <color name="chart_tab_indicator">#FF6601</color>
+    <color name="chart_minute_avg">#90A901</color>
+    <color name="chart_minute_price">#FF6600</color>
+    <color name="chart_minute_fill">#66FF5252</color>
+    <color name="chart_minute_gradient_start_color">#00808080</color>
+    <color name="chart_minute_gradient_end_color">#000000</color>
+    <color name="chart_screen_maxHighPrice_color">#FFFFFF</color>
+    <color name="chart_screen_minLowPrice_color">#FFFFFF</color>
 </resources>

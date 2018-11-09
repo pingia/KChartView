@@ -11,13 +11,13 @@ public interface IRSI {
     /**
      * RSI1值
      */
-    float getRsi1();
+    double getRsi1();
     /**
      * RSI2值
      */
-    float getRsi2();
+    double getRsi2();
     /**
      * RSI3值
      */
-    float getRsi3();
+    double getRsi3();
 }

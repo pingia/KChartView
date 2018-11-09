@@ -9,9 +9,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
-import com.github.tifezh.kchartlib.chart.entity.IMACD;
 import com.github.tifezh.kchartlib.chart.base.IChartDraw;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
+import com.github.tifezh.kchartlib.chart.entity.IMACD;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 
 /**
@@ -21,18 +21,23 @@ import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 
 public class MACDDraw implements IChartDraw<IMACD> {
 
-    private Paint mRedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mGreenPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mRaisePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mFallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mDIFPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mDEAPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mMACDPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     /**macd 中柱子的宽度*/
     private float mMACDWidth = 0;
 
+    private boolean mMACDRedRaise = true;
+    private int redColor;
+    private int greenColor ;
+    private Context mContext;
+
     public MACDDraw(BaseKChartView view) {
-        Context context=view.getContext();
-        mRedPaint.setColor(ContextCompat.getColor(context,R.color.chart_red));
-        mGreenPaint.setColor(ContextCompat.getColor(context,R.color.chart_green));
+        mContext=view.getContext();
+        redColor = ContextCompat.getColor(mContext,R.color.chart_red);
+        greenColor = ContextCompat.getColor(mContext,R.color.chart_green);
     }
 
     @Override
@@ -57,12 +62,12 @@ public class MACDDraw implements IChartDraw<IMACD> {
     }
 
     @Override
-    public float getMaxValue(IMACD point) {
+    public double getMaxValue(IMACD point) {
         return Math.max(point.getMacd(), Math.max(point.getDea(), point.getDif()));
     }
 
     @Override
-    public float getMinValue(IMACD point) {
+    public double getMinValue(IMACD point) {
         return Math.min(point.getMacd(), Math.min(point.getDea(), point.getDif()));
     }
 
@@ -77,15 +82,18 @@ public class MACDDraw implements IChartDraw<IMACD> {
      * @param x
      * @param macd
      */
-    private void drawMACD(Canvas canvas, BaseKChartView view, float x, float macd) {
+    private void drawMACD(Canvas canvas, BaseKChartView view, float x, double macd) {
+        mRaisePaint.setColor(mMACDRedRaise ? redColor: greenColor);
+        mFallPaint.setColor(mMACDRedRaise ? greenColor : redColor);
+
         float macdy = view.getChildY(macd);
         float r = mMACDWidth / 2;
         float zeroy = view.getChildY(0);
         if (macd > 0) {
             //               left   top   right  bottom
-            canvas.drawRect(x - r, macdy, x + r, zeroy, mRedPaint);
+            canvas.drawRect(x - r, macdy, x + r, zeroy, mRaisePaint);
         } else {
-            canvas.drawRect(x - r, zeroy, x + r, macdy, mGreenPaint);
+            canvas.drawRect(x - r, zeroy, x + r, macdy, mFallPaint);
         }
     }
 
@@ -136,5 +144,23 @@ public class MACDDraw implements IChartDraw<IMACD> {
         mDEAPaint.setTextSize(textSize);
         mDIFPaint.setTextSize(textSize);
         mMACDPaint.setTextSize(textSize);
+    }
+
+
+    /**
+     * 是否红涨绿跌
+     * @param redRaise
+     */
+    public void setMACDRedRaise(boolean redRaise) {
+        mMACDRedRaise = redRaise;
+    }
+
+
+    public void setRedColor(int color){
+        redColor = color;
+    }
+
+    public void setGreenColor(int color){
+        greenColor = color;
     }
 }

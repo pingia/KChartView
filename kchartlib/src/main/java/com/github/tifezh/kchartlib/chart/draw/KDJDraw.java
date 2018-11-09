@@ -47,12 +47,12 @@ public class KDJDraw implements IChartDraw<IKDJ> {
     }
 
     @Override
-    public float getMaxValue(IKDJ point) {
+    public double getMaxValue(IKDJ point) {
         return Math.max(point.getK(), Math.max(point.getD(), point.getJ()));
     }
 
     @Override
-    public float getMinValue(IKDJ point) {
+    public double getMinValue(IKDJ point) {
         return Math.min(point.getK(), Math.min(point.getD(), point.getJ()));
     }
 

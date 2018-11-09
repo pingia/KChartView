@@ -2,6 +2,8 @@ package com.github.tifezh.kchartlib.chart.formatter;
 
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -9,25 +11,47 @@ import java.util.Locale;
  * Created by tifezh on 2017/12/13.
  */
 
-public class BigValueFormatter implements IValueFormatter{
+public class BigValueFormatter implements IValueFormatter {
 
     //必须是排好序的
-    private int[] values={10000,1000000,100000000};
-    private String[] units={"万","百万","亿"};
+    private List<Integer> unitValues = new ArrayList<>();
+    private List<String> unitStrs = new ArrayList<>();
+    private List<Integer> decimalNumbers = new ArrayList<>();
+    private int mDefaultDecimalNumber;
+
+    public BigValueFormatter(List<QuantityUnit> quantityUnits, int defaultDecimalNumber){
+        if(null == quantityUnits || quantityUnits.size() ==0 ){
+            return;
+        }
+
+        mDefaultDecimalNumber = defaultDecimalNumber;
+        for (QuantityUnit unit : quantityUnits){
+            unitValues.add(unit.getUnitValue());
+            unitStrs.add(unit.getUnitStr());
+            decimalNumbers.add(unit.getDecimalNumber());
+        }
+
+    }
 
     @Override
-    public String format(float value) {
-        String unit="";
-        int i=values.length-1;
+    public String format(double value) {
+        int index = -1;
+        int i=unitValues.size()-1;
         while (i>=0)
         {
-            if(value>values[i]) {
-                value /= values[i];
-                unit = units[i];
+            if(value>=unitValues.get(i)) {
+                value /= unitValues.get(i);
+                index = i;
                 break;
             }
             i--;
         }
-        return String.format(Locale.getDefault(),"%.2f", value)+unit;
+
+        if(index < 0 ){
+            return String.format(Locale.getDefault(),"%." + mDefaultDecimalNumber + "f", value) ;
+        }else{
+            return String.format(Locale.getDefault(),"%." + decimalNumbers.get(index) + "f", value)  + unitStrs.get(index);
+        }
+
     }
 }

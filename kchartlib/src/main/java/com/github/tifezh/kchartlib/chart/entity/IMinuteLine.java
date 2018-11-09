@@ -12,12 +12,12 @@ public interface IMinuteLine {
     /**
      * @return 获取均价
      */
-    float getAvgPrice();
+    double getAvgPrice();
 
     /**
      * @return 获取成交价
      */
-    float getPrice();
+    double getPrice();
 
     /**
      * 该指标对应的时间
@@ -27,5 +27,5 @@ public interface IMinuteLine {
     /**
      * 成交量
      */
-    float getVolume();
+    double getVolume();
 }

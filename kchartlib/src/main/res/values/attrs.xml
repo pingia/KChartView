@@ -2,15 +2,26 @@
 <resources>
     <declare-styleable name="KChartView">
         <!--公共的-->
-        <attr name="kc_text_size" format="dimension"/>
-        <attr name="kc_text_color" format="color"/>
-        <attr name="kc_line_width" format="dimension"/>
-        <attr name="kc_background_color" format="color"/>
-        <attr name="kc_selected_line_color" format="color"/>
-        <attr name="kc_selected_line_width" format="dimension"/>
-        <attr name="kc_grid_line_width" format="dimension"/>
-        <attr name="kc_grid_line_color" format="color"/>
-        <attr name="kc_point_width" format="dimension"/>
+        <attr name="kc_text_size" format="dimension"/>      <!-- 通用的文字大小-->
+        <attr name="kc_index_text_size" format="dimension"/>    <!--指标文字大小 ma5...ma10 -->
+        <attr name="kc_text_color" format="color"/>         <!--通用的文字颜色 -->
+        <attr name="kc_volume_text_color" format="color"/>  <!-- 成交量柱图文字颜色-->
+        <attr name="kc_line_width" format="dimension"/>     <!--通用的线条宽度 -->
+        <attr name="kc_background_color" format="color"/>   <!-- 通用的背景色 -->
+        <attr name="kc_selected_line_color" format="color"/>    <!-- 光标选中线的颜色 -->
+        <attr name="kc_selected_line_width" format="dimension"/>    <!-- 光标选中线的宽度 -->
+        <attr name="kc_selected_title_color" format="color"/>   <!-- 光标详情框图中title颜色-->
+        <attr name="kc_selected_text_color" format="color"/>    <!-- 光标详情框图中text颜色-->
+        <attr name="kc_selector_text_size" format="dimension"/> <!-- 光标详情框图中text和title文字大小-->
+        <attr name="kc_time_slider_stroke_color" format="color"/>   <!-- 光标出现时，时间横轴上的滑块边框颜色-->
+        <attr name="kc_grid_line_width" format="dimension"/>    <!-- 表格分割线宽度-->
+        <attr name="kc_grid_line_color" format="color"/>    <!-- 表格分割线颜色-->
+        <attr name="kc_point_width" format="dimension"/>    <!-- 蜡烛图或柱图，柱子之间的间距 -->
+        <attr name="kc_screen_maxHighPrice_color" format="color"/>  <!-- 绘制屏幕内最高价的颜色-->
+        <attr name="kc_screen_minLowPrice_color" format="color"/> <!-- 绘制屏幕内最低价的颜色-->
+        <attr name="kc_draw_screen_maxHighMinLow" format="boolean"/> <!-- 是否绘制屏幕内最高最低价 -->
+        <attr name="kc_red_color" format="color"/>
+        <attr name="kc_green_color" format="color"/>
         <!--macd-->
         <attr name="kc_macd_width" format="dimension"/>
         <attr name="kc_dif_color" format="color"/>
@@ -32,11 +43,25 @@
         <attr name="kc_ma5_color" format="color"/>
         <attr name="kc_ma10_color" format="color"/>
         <attr name="kc_ma20_color" format="color"/>
-        <attr name="kc_candle_width" format="dimension"/>
-        <attr name="kc_candle_line_width" format="dimension"/>
-        <attr name="kc_selector_background_color" format="color"/>
-        <attr name="kc_selector_text_size" format="dimension"/>
-        <attr name="kc_candle_solid" format="boolean"/>
+        <attr name="kc_ma30_color" format="color"/>
+        <attr name="kc_ma60_color" format="color"/>
+        <attr name="kc_selector_background_color" format="color"/>  <!-- 光标详情框图背景色-->
+        <attr name="kc_selector_bg_shadow_color" format="color"/>  <!-- 光标详情框图背景阴影色 -->
+        <attr name="kc_minute_fill_path" format="boolean"/>    <!-- 分时图是否需要填充 -->
+        <attr name="kc_minute_price_color" format="color"/>     <!-- 分时价格线颜色-->
+        <attr name="kc_minute_fill_color" format="color"/>      <!-- 分时图的填充色 -->
+        <attr name="kc_minute_gradient_start_color" format="color"/>    <!--分时图的渐变起始颜色 -->
+        <attr name="kc_minute_gradient_end_color" format="color"/>  <!-- 分时图的渐变结束颜色 -->
+        <attr name="kc_candle_width" format="dimension"/>   <!-- 蜡烛图的柱子宽度 -->
+        <attr name="kc_candle_line_width" format="dimension"/>  <!--蜡烛图线的宽度 -->
+        <attr name="kc_candle_solid" format="boolean"/>     <!-- 蜡烛图空心或实心 -->
+        <attr name="kc_candle_red_raise" format="boolean"/> <!-- 蜡烛图是否红涨绿跌-->
+        <attr name="kc_pillar_width" format="dimension"/>   <!-- 成交量柱子的宽度-->
+        <attr name="kc_minute_gradient" format="boolean"/>  <!-- 是否渐变-->
+        <attr name="kc_minute_gradient_orientation">    <!--分时线渐变方向 -->
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
         <!--tab-->
         <attr name="kc_tab_background_color" format="color"/>
         <attr name="kc_tab_text_color" format="color"/>

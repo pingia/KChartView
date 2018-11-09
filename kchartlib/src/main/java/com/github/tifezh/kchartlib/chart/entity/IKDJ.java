@@ -10,16 +10,16 @@ public interface IKDJ {
     /**
      * K值
      */
-    float getK();
+    double getK();
 
     /**
      * D值
      */
-    float getD();
+    double getD();
 
     /**
      * J值
      */
-    float getJ();
+    double getJ();
 
 }

@@ -48,12 +48,12 @@ public class RSIDraw implements IChartDraw<IRSI> {
     }
 
     @Override
-    public float getMaxValue(IRSI point) {
+    public double getMaxValue(IRSI point) {
         return Math.max(point.getRsi1(), Math.max(point.getRsi2(), point.getRsi3()));
     }
 
     @Override
-    public float getMinValue(IRSI point) {
+    public double getMinValue(IRSI point) {
         return Math.min(point.getRsi1(), Math.min(point.getRsi2(), point.getRsi3()));
     }
 

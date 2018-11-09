@@ -11,15 +11,15 @@ public interface IBOLL {
     /**
      * 上轨线
      */
-    float getUp();
+    double getUp();
 
     /**
      * 中轨线
      */
-    float getMb();
+    double getMb();
 
     /**
      * 下轨线
      */
-    float getDn();
+    double getDn();
 }

@@ -9,7 +9,7 @@ import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 
 public class ValueFormatter implements IValueFormatter {
     @Override
-    public String format(float value) {
+    public String format(double value) {
         return String.format("%.2f", value);
     }
 }

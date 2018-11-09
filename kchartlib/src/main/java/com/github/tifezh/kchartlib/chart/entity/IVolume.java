@@ -10,25 +10,25 @@ public interface IVolume {
     /**
      * 开盘价
      */
-    float getOpenPrice();
+    double getOpenPrice();
 
     /**
      * 收盘价
      */
-    float getClosePrice();
+    double getClosePrice();
 
     /**
      * 成交量
      */
-    float getVolume();
+    double getVolume();
 
     /**
      * 五(月，日，时，分，5分等)均量
      */
-    float getMA5Volume();
+    double getMA5Volume();
 
     /**
      * 十(月，日，时，分，5分等)均量
      */
-    float getMA10Volume();
+    double getMA10Volume();
 }

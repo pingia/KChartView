@@ -20,7 +20,11 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     protected GestureDetectorCompat mDetector;
     protected ScaleGestureDetector mScaleDetector;
 
-    protected boolean isLongPress = false;
+    private boolean isSystemLongPress = false;  //是否系统长按事件，该事件的时间延迟为500ms
+    private boolean isCustomLongPress = false;  //是否自定义的长按事件，该事件的时间延迟为200ms
+    private boolean isPointerActionUp = false;  //是否双指滑动的瞬间，抬起了其中一只手指
+
+    protected boolean isTenShow;    //十字星标是否应当显示
 
     private OverScroller mScroller;
 
@@ -67,31 +71,53 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
 
     @Override
     public void onShowPress(MotionEvent e) {
-
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
+        isTenShow = true;
+        onTenshow(e);
         return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (!isLongPress&&!isMultipleTouch()) {
+        if (!isLongPress() &&!isMultipleTouch() ) {
             scrollBy(Math.round(distanceX), 0);
+            if(!isPointerActionUp) {    //双指滑动时继续显示十字光标
+                isTenShow = false;
+                invalidate();
+            }
             return true;
         }
         return false;
     }
 
+    /**
+     * 系统长按或自定义长按只要有一个满足，就认为是长按
+     * @return
+     */
+    protected boolean isLongPress(){
+        return isSystemLongPress || isCustomLongPress;
+    }
+
     @Override
     public void onLongPress(MotionEvent e) {
-        isLongPress = true;
+        isSystemLongPress = true;
+        if(e.getPointerCount() == 1) {  //只有单指长按事件才绘制十字星标
+            isTenShow = true;
+            onTenshow(e);
+        }
+
+    }
+
+    public void onTenshow(MotionEvent e) {
+
     }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        if (!isTouch()&&isScrollEnable()) {
+        if (!isTouch()&&isScrollEnable()  ) {
             mScroller.fling(mScrollX, 0
                     , Math.round(velocityX / mScaleX), 0,
                     Integer.MIN_VALUE, Integer.MAX_VALUE,
@@ -171,30 +197,47 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
 
     }
 
+    private long downTime = -1;     //首次触摸事件的按下时间
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
+                downTime = System.currentTimeMillis();
                 touch = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (event.getPointerCount() == 1) {
-                    //长按之后移动
-                    if (isLongPress) {
-                        onLongPress(event);
+                    long moveTime  = System.currentTimeMillis();
+
+                    if(moveTime - downTime > 300 && !isPointerActionUp){
+                        isCustomLongPress = true;
                     }
+                    //长按之后移动
+                    if (isLongPress()) {
+                        isTenShow = true;
+                        onTenshow(event);
+                    }
+
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
+                isPointerActionUp = true;
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                isLongPress = false;
+                isPointerActionUp = false;
+                isSystemLongPress = false;
+                isCustomLongPress = false;
+                downTime = -1;
                 touch = false;
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                isLongPress = false;
+				isPointerActionUp = false;
+                isSystemLongPress = false;
+                isCustomLongPress = false;
+                downTime = -1;
                 touch = false;
                 invalidate();
                 break;

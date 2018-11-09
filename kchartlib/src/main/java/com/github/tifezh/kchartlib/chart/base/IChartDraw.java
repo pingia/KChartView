@@ -41,7 +41,7 @@ public interface IChartDraw<T> {
      * @param point
      * @return
      */
-    float getMaxValue(T point);
+    double getMaxValue(T point);
 
     /**
      * 获取当前实体中最小的值
@@ -49,7 +49,7 @@ public interface IChartDraw<T> {
      * @param point
      * @return
      */
-    float getMinValue(T point);
+    double getMinValue(T point);
 
     /**
      * 获取value格式化器

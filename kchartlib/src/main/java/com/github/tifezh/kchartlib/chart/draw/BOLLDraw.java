@@ -48,16 +48,16 @@ public class BOLLDraw implements IChartDraw<IBOLL> {
     }
 
     @Override
-    public float getMaxValue(IBOLL point) {
-        if (Float.isNaN(point.getUp())) {
+    public double getMaxValue(IBOLL point) {
+        if (Double.isNaN(point.getUp())) {
             return point.getMb();
         }
         return point.getUp();
     }
 
     @Override
-    public float getMinValue(IBOLL point) {
-        if (Float.isNaN(point.getDn())) {
+    public double getMinValue(IBOLL point) {
+        if (Double.isNaN(point.getDn())) {
             return point.getMb();
         }
         return point.getDn();

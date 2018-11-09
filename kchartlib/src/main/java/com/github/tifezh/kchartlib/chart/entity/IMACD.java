@@ -12,16 +12,16 @@ public interface IMACD {
     /**
      * DEA值
      */
-    float getDea();
+    double getDea();
 
     /**
      * DIF值
      */
-    float getDif();
+    double getDif();
 
     /**
      * MACD值
      */
-    float getMacd();
+    double getMacd();
 
 }
